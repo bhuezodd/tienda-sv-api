@@ -14,4 +14,12 @@ class category extends Model
         'slug',
         'img'
     ];
+    public function product(){
+        return $this->belongsToMany(
+            product::class,
+            'category_product',
+            'product_id',
+            'category_id'
+        );
+    }
 }

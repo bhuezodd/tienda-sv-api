@@ -13,4 +13,13 @@ class order extends Model
         'products',
         'date'
     ];
+
+    public function product(){
+        return $this-> belongsToMany(
+            product::class,
+            'order_product',
+            'product_id',
+            'order_id'
+        );
+    }
 }

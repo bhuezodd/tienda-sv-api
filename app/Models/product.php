@@ -17,4 +17,24 @@ class product extends Model
         'sale_price',
         'stock_qty'
     ];
+
+    public function order(){
+        return $this-> belongsToMany(
+            order::class,
+            'order_product',
+            'order_id',
+            'product_id'
+        );
+    }
+
+    public function category(){
+        return $this-> belongsToMany(
+            category::class,
+            'category_product',
+            'category_id',
+            'product_id'
+            
+            
+        );
+    }
 }
