@@ -19,8 +19,8 @@ class CreateProductsTable extends Migration
             $table->text('name');
             $table->string('img');
             $table->text('description');
-            $table->double('regular_price');
-            $table->double('sale_price');
+            $table->double('regular_price',8,2);
+            $table->double('sale_price' ,8,2);
             $table->integer('stock_qty');
         });
     }

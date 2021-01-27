@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use App\Models\order;
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class OrderFactory extends Factory
@@ -25,7 +25,6 @@ class OrderFactory extends Factory
         $users = User::pluck('id')->toArray();
         return [
             'user_id' => $this->faker->randomElement($users),
-            'products'=> $this->faker->text,
         ]; 
     }
 }
