@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -28,7 +30,21 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = auth()->user()->id;
+        $order_id = Order::insertGetId(['user_id'=>$id,'created_at'=>now(),'updated_at'=>now()]);
+        foreach($request->items as $order_item){
+            $product_id = $order_item['item_id'];
+            $stock = Product::where('id',$product_id)->value('stock_qty');
+            $price =Product::where('id',$product_id)->value('sale_price');
+            $qty = $order_item['qty'];
+            if($stock>=$qty){
+                DB::table('order_product')->insert(['created_at'=>now(),'updated_at'=>now(),'order_id'=>$order_id,'product_id'=>$product_id,'quantity'=>$qty,'price'=>$price]);
+                Product::where('id',$product_id)->update(['stock_qty'=>($stock-$qty)]);
+            }else{
+                return response('no hay producto');
+            }
+        }
+        return response('todo ok');
     }
 
     /**
@@ -55,7 +71,12 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $order= Order::where('id',$request->id)->value('status');
+        if($order=='active'){
+            Order::where('id',$request->id)->update(['status'=>'inactive']);
+        }else{
+            Order::where('id',$request->id)->update(['status'=>'active']);
+        }
     }
 
     /**
