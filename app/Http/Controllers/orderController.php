@@ -71,11 +71,10 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        $order= Order::where('id',$request->id)->value('status');
-        if($order=='active'){
-            Order::where('id',$request->id)->update(['status'=>'inactive']);
+        if($order['status']=='active'){
+            Order::where('id',$order['id'])->update(['status'=>'inactive']);
         }else{
-            Order::where('id',$request->id)->update(['status'=>'active']);
+            Order::where('id',$order['id'])->update(['status'=>'active']);
         }
     }
 
