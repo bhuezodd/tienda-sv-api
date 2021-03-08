@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Address;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class addressResource extends JsonResource
@@ -19,7 +20,7 @@ class addressResource extends JsonResource
             'user_id'=>$this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'address'=> $this->address,
+            'address'=>$this->address,
             'municipality'=>$this->municipality
     ];
     }

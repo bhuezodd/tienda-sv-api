@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\addressResource;
+use App\Http\Resources\UserResource;
 use App\Models\Address;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class addressController extends Controller
@@ -17,7 +19,8 @@ class addressController extends Controller
     {
         $id = auth()->user()->id;
         $addreses = Address::where('user_id', $id)->orderBy('created_at')->get();
-        return addressResource::collection($addreses);
+        $user=User::where('id',$id)->first();
+        return new UserResource(User::findOrFail($id));
     }
 
     /**
@@ -32,7 +35,7 @@ class addressController extends Controller
         $addreses=Address::where('user_id',$id)->get();
         if($addreses->count<3){
             Address::insertGetId(['user_id'=>$id,'created_at'=>now(),'updated_at'=>now(),'address'=>$request['address'],'municipality'=>$request['municipality']]);
-            return new addressResource()
+            return new UserResource(User::where('id',$id)->get());
         }else{
             return response('muchas direcciones');
         }
